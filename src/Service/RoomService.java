@@ -116,7 +116,7 @@ public class RoomService {
         for (Integer rating : ratings) {
             sum += rating;
         }
-        return (sum * 1.0) / ratings.size();
+        return (double)sum / ratings.size();
     }
 
     /**

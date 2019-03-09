@@ -33,7 +33,7 @@ public class RoomRepository {
             throw new RuntimeException("A room with that ID already exists!");
         }
 
-        validator.validate(room);
+        validator.validateCheckIn(room);
         storage.put(room.getId(), room);
     }
 
@@ -48,7 +48,7 @@ public class RoomRepository {
             throw new RuntimeException("There is no room with the given ID to update!");
         }
 
-        validator.validate(room);
+        validator.validateCheckOut(room);
         storage.put(room.getId(), room);
     }
 

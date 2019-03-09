@@ -8,11 +8,16 @@ public class RoomValidator {
      * @throws RuntimeException if there are validation errors.
      */
 
-    public void validate(Room room) {
+    public void validateCheckIn(Room room) {
 
         if(room.getDays() <= 0) {
             throw new RuntimeException("The number of days must be greater than 0!");
         }
+
+    }
+
+    public void validateCheckOut(Room room) {
+
         String feedback = room.getFeedback();
         if(feedback.length() == 0 || Character.compare(feedback.charAt(0), '\n') == 0) {
             throw new RuntimeException("The feedback must not be empty!");

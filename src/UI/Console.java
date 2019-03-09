@@ -60,13 +60,13 @@ public class Console {
     private void handleCheckIn() {
 
         try {
-            System.out.println("Dati ID-ul: ");
+            System.out.print("Dati ID-ul: ");
             int id = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati numarul camerei: ");
+            System.out.print("Dati numarul camerei: ");
             int number = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati numarul de persoane: ");
+            System.out.print("Dati numarul de persoane: ");
             int capacity = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati numarul de zile: ");
+            System.out.print("Dati numarul de zile: ");
             int days = Integer.parseInt(scanner.nextLine());
 
             service.checkIn(id, number, capacity, days);
@@ -78,11 +78,11 @@ public class Console {
     private void handleCheckOut() {
 
         try {
-            System.out.println("Dati numarul camerei: ");
+            System.out.print("Dati numarul camerei: ");
             int number = Integer.parseInt(scanner.nextLine());
-            System.out.println("Dati un feedback: ");
+            System.out.print("Dati un feedback: ");
             String report = scanner.nextLine();
-            System.out.println("Dati un rating: ");
+            System.out.print("Dati un rating: ");
             int rating = Integer.parseInt(scanner.nextLine());
 
             service.checkOut(number, report, rating);
