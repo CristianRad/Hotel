@@ -1,6 +1,7 @@
 package Service;
 
 import Domain.Room;
+import Domain.RoomAverageRating;
 import Repository.RoomRepository;
 
 import java.util.*;
@@ -67,6 +68,42 @@ public class RoomService {
 
     }
 
+    public List<RoomAverageRating> getRoomRatingAverages() {
+
+        List<RoomAverageRating> results = new ArrayList<>();
+        Map<Integer, List<Integer>> ratingsForRooms = new HashMap<>();
+
+        for (Room r : repository.getAll())
+            if (r.isCheckOut()) {
+                int room = r.getNumber();
+                int rating = r.getRating();
+
+                if(!ratingsForRooms.containsKey(room))
+                    ratingsForRooms.put(room, new ArrayList<>());
+                ratingsForRooms.get(room).add(rating);
+            }
+
+        for (int room : ratingsForRooms.keySet()) {
+            List<Integer> ratings = ratingsForRooms.get(room);
+            int sum = 0;
+            for (int r : ratings)
+                sum += r;
+            double average = (double) sum / ratings.size();
+            results.add(new RoomAverageRating(room, average));
+        }
+
+        results.sort((r1, r2) -> {
+            if (r1.getAverageRating() > r2.getAverageRating())
+                return -1;
+            else if (r1.getAverageRating() == r2.getAverageRating())
+                return 0;
+            else
+                return 1;
+        });
+        return results;
+
+    }
+
     /**
      * @return a list of all check-ins.
      */
@@ -75,70 +112,4 @@ public class RoomService {
         return repository.getAll();
     }
 
-    /**
-     * @return a list of all rooms.
-     */
-
-    public Set<Integer> getAllRooms() {
-
-        Set<Integer> rooms = new HashSet<>();
-        List<Room> checkIns = getAll();
-        for (Room room : checkIns) {
-            rooms.add(room.getNumber());
-        }
-        return rooms;
-    }
-
-    /**
-     * @return a list of ratings for a given room.
-     * @param number is the room number.
-     */
-
-    public List<Integer> getRatingsByRoom(int number) {
-
-        List<Integer> ratings = new ArrayList<>();
-        for (Room room : getAll()) {
-            if(room.getNumber() == number) {
-                ratings.add(room.getRating());
-            }
-        }
-        return ratings;
-    }
-
-    /**
-     * @return the average rating for each room.
-     * @param ratings is a list with all the ratings for a room.
-     */
-
-    public Double getAverage(List<Integer> ratings) {
-
-        int sum = 0;
-        for (Integer rating : ratings) {
-            sum += rating;
-        }
-        return (double)sum / ratings.size();
-    }
-
-    /**
-     * @return a report of the average ratings per room.
-     */
-
-    public Map<Double, Integer> getReports() {
-
-        Map<Double, Integer> reports = new TreeMap<>();
-        for (Integer number : getAllRooms()) {
-            List<Integer> ratings = getRatingsByRoom(number);
-            Double average = getAverage(ratings);
-            reports.put(average, number);
-        }
-
-        Map<Double, Integer> descReports = new TreeMap<>(new Comparator<Double>() {
-            @Override
-            public int compare(Double rating1, Double rating2) {
-                return rating2.compareTo(rating1);
-            }
-        });
-        descReports.putAll(reports);
-        return descReports;
-    }
 }

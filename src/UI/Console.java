@@ -1,6 +1,7 @@
 package UI;
 
 import Domain.Room;
+import Domain.RoomAverageRating;
 import Service.RoomService;
 
 import java.util.Map;
@@ -46,9 +47,8 @@ public class Console {
 
     private void handleRoomReport() {
 
-        Map<Double, Integer> reports = service.getReports();
-        for (Double rating : reports.keySet())
-            System.out.println("Room: " + reports.get(rating) + " rating: " + rating);
+        for (RoomAverageRating ratingAverage : service.getRoomRatingAverages())
+            System.out.println(ratingAverage);
     }
 
     private void handleShowAll() {
